@@ -102,10 +102,11 @@ def tela_disciplina(escolhida):
 
 
 print("=" * 30)
-print("Bem-vindo(a) ao seu Organizador de Estudos!")
+print("Bem-vindo(a) ao seu Organizador de Estudos! 📚")
 print("=" * 30)
 time.sleep(1)
 while True:
+    print("\n" + "=" * 30)
     print('1 - Ver disciplinas')
     print('2 - Adicionar disciplina')
     print('3 - Sair')
@@ -114,6 +115,9 @@ while True:
         print("Até mais! Bons estudos! 📚")
         break 
     elif escolha == '1':
+        print("\n" + "-" * 30)
+        print("SUAS DISCIPLINAS".center(30))
+        print("-" * 30)
         lista_disciplinas = ver_disciplina()
         print('R - Remover disciplina')
         print('V - Voltar')
@@ -126,7 +130,7 @@ while True:
                 if confirmacao_disciplina in 'Ss':
                     remover_disciplina(indice_remover)
                 elif confirmacao_disciplina in 'Nn':
-                    print('Remoção Cancelada.')git 
+                    print('Remoção Cancelada.')
             else:
                 print('\033[91mOpção inválida. Tente novamente!\033[0m')
 
