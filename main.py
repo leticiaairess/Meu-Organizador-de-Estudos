@@ -20,15 +20,24 @@ def adicionar_disciplinas():
         print(f'\033[92mDisciplina {nova_disciplina} foi adicionada com sucesso!! ✅\033[0m')  
 
 def remover_disciplina(numero_remover):
-    if numero_remover.isdigit():
-        numero_remover = int(numero_remover)
-        if numero_remover <= len(lista_disciplinas) and numero_remover > 0:
-            removida = lista_disciplinas[numero_remover - 1]
-            print(f"Disciplina '{removida}' removida com sucesso!")
-            del disciplinas[removida]
-            salva_disciplinas()
+    indice_remover = verificacao_valor(numero_remover, lista_disciplinas)
+    if indice_remover != None:
+        removida = lista_disciplinas[indice_remover]
+        print(f"Disciplina '{removida}' removida com sucesso!")
+        del disciplinas[removida]
+        salva_disciplinas()
+    else:
+        print('\033[91mOpção inválida. Tente novamente!\033[0m')
+
+def verificacao_valor(valor, condicao):
+    if valor.isdigit():
+        valor = int(valor)
+        if valor <= len(condicao) and valor > 0:
+            indice = valor - 1
+            return indice
         else:
             print('\033[91mOpção inválida. Tente novamente!\033[0m')
+
 
 def ver_disciplina():
     lista_disciplinas = [] 
@@ -51,39 +60,38 @@ def tela_disciplina(escolhida):
                 marca = '[ ]'
             print(f'{i} - {marca} {tarefa["nome"]}')
             i += 1
-        print('A - Voltar')
-        print('B - Adicionar Atividade')
-        print('M - Marcar/Desmarcar Atividade')
-        print('R - Remover Atividade')
+        print('V - Voltar')
+        print('A - Adicionar Tarefa')
+        print('M - Marcar/Desmarcar Tarefa')
+        print('R - Remover Tarefa')
         escolha_tela = input('Escolha: ').upper()
-        if escolha_tela == 'B':
+        if escolha_tela == 'A':
             nome_tarefa = input('Tarefa a ser adicionada: ')
             nova_tarefa = {"nome": nome_tarefa, "feita": False}
             disciplinas[escolhida].append(nova_tarefa)
             salva_disciplinas()
             print(f'\033[92mTarefa "{nome_tarefa}" adicionada com sucesso!! ✅\033[0m')
-        elif escolha_tela == 'A':
+        elif escolha_tela == 'V':
             break
         elif escolha_tela == 'R':
             tarefas_disciplina = disciplinas[escolhida]
-            numero_remover_tarefa= input('Qual o número da atividade que quer remover? ')
-            if numero_remover_tarefa.isdigit():
-                numero_remover_tarefa = int(numero_remover_tarefa)
-                if numero_remover_tarefa <= len(tarefas_disciplina) and numero_remover_tarefa > 0:
-                    indice_remover = numero_remover_tarefa - 1
-                    tarefas_disciplina.pop(indice_remover)
-                    print(f'Atividade removida com sucesso')
-                    salva_disciplinas()
+            numero_remover_tarefa= input('Qual o número da tarefa que quer remover? ')
+            indice_remover = verificacao_valor(numero_remover_tarefa, tarefas_disciplina)
+            if indice_remover != None:
+                tarefas_disciplina.pop(indice_remover)
+                print(f'Tarefa removida com sucesso')
+                salva_disciplinas()
+            else:
+                print('\033[91mOpção inválida. Tente novamente!\033[0m')
+                
         elif escolha_tela == 'M':
-            numero_marcar = input('Qual o número da atividade que você deseja marcar/desmarcar? ')
-            if numero_marcar.isdigit():
-                numero_marcar = int(numero_marcar)
-                if numero_marcar <= len(disciplinas[escolhida]) and numero_marcar > 0:
-                    indice_marcar = numero_marcar - 1
-                    disciplinas[escolhida][indice_marcar]["feita"] = not disciplinas[escolhida][indice_marcar]["feita"]
-                    salva_disciplinas()
-                else:
-                    print('\033[91mOpção inválida. Tente novamente!\033[0m')
+            numero_marcar = input('Qual o número da tarefa que você deseja marcar/desmarcar? ')
+            indice_marcar = verificacao_valor(numero_marcar, disciplinas[escolhida])
+            if indice_marcar != None:
+                disciplinas[escolhida][indice_marcar]["feita"] = not disciplinas[escolhida][indice_marcar]["feita"]
+                salva_disciplinas()
+            else:
+                print('\033[91mOpção inválida. Tente novamente!\033[0m')
         else:
             print('\033[91mOpção inválida. Tente novamente!\033[0m')
 
@@ -109,12 +117,11 @@ while True:
         escolha_disciplina= input('Escolha: ')
         if escolha_disciplina in 'Rr':
             numero_remover = input('Qual o número da disciplina que quer remover? ')
-            if numero_remover.isdigit():
-                remover_disciplina(numero_remover)
+            remover_disciplina(numero_remover)
         elif escolha_disciplina.isdigit():
-            escolha_disciplina = int(escolha_disciplina)
-            if escolha_disciplina <= len(lista_disciplinas) and escolha_disciplina > 0:
-                escolhida = lista_disciplinas[escolha_disciplina - 1]
+            indice_disciplina = verificacao_valor(escolha_disciplina, lista_disciplinas)
+            if indice_disciplina != None:
+                escolhida = lista_disciplinas[indice_disciplina]
                 tela_disciplina(escolhida)
             else:
                 print('\033[91mOpção inválida. Tente novamente!\033[0m')
