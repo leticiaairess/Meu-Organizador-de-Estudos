@@ -61,7 +61,7 @@ def tela_disciplina(escolhida):
             nova_tarefa = {"nome": nome_tarefa, "feita": False}
             disciplinas[escolhida].append(nova_tarefa)
             salva_disciplinas()
-            print(f'\033[92mTarefa "{nova_tarefa}" adicionada com sucesso!! ✅\033[0m')
+            print(f'\033[92mTarefa "{nome_tarefa}" adicionada com sucesso!! ✅\033[0m')
         elif escolha_tela == 'A':
             break
         elif escolha_tela == 'R':
@@ -75,7 +75,15 @@ def tela_disciplina(escolhida):
                     print(f'Atividade removida com sucesso')
                     salva_disciplinas()
         elif escolha_tela == 'M':
-            numero_marcar = input('Qual o número da atividade que você deseja marcar/desmarcar?')
+            numero_marcar = input('Qual o número da atividade que você deseja marcar/desmarcar? ')
+            if numero_marcar.isdigit():
+                numero_marcar = int(numero_marcar)
+                if numero_marcar <= len(disciplinas[escolhida]) and numero_marcar > 0:
+                    indice_marcar = numero_marcar - 1
+                    disciplinas[escolhida][indice_marcar]["feita"] = not disciplinas[escolhida][indice_marcar]["feita"]
+                    salva_disciplinas()
+                else:
+                    print('\033[91mOpção inválida. Tente novamente!\033[0m')
         else:
             print('\033[91mOpção inválida. Tente novamente!\033[0m')
 
