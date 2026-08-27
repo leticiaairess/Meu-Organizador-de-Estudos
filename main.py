@@ -19,15 +19,11 @@ def adicionar_disciplinas():
         salva_disciplinas()
         print(f'\033[92mDisciplina {nova_disciplina} foi adicionada com sucesso!! ✅\033[0m')  
 
-def remover_disciplina(numero_remover):
-    indice_remover = verificacao_valor(numero_remover, lista_disciplinas)
-    if indice_remover != None:
-        removida = lista_disciplinas[indice_remover]
-        print(f"Disciplina '{removida}' removida com sucesso!")
-        del disciplinas[removida]
-        salva_disciplinas()
-    else:
-        print('\033[91mOpção inválida. Tente novamente!\033[0m')
+def remover_disciplina(indice_remover):
+    removida = lista_disciplinas[indice_remover]
+    print(f"Disciplina '{removida}' removida com sucesso!")
+    del disciplinas[removida]
+    salva_disciplinas()
 
 def verificacao_valor(valor, condicao):
     if valor.isdigit():
@@ -77,17 +73,25 @@ def tela_disciplina(escolhida):
             tarefas_disciplina = disciplinas[escolhida]
             numero_remover_tarefa= input('Qual o número da tarefa que quer remover? ')
             indice_remover = verificacao_valor(numero_remover_tarefa, tarefas_disciplina)
-            if indice_remover != None:
-                tarefas_disciplina.pop(indice_remover)
-                print(f'Tarefa removida com sucesso')
-                salva_disciplinas()
+            if indice_remover is not None:
+                confirmacao_tarefa = input(f'Tem certeza que deseja remover a tarefa "{tarefas_disciplina[indice_remover]["nome"]}"? (S/N) ')
+                if confirmacao_tarefa in 'Ss':
+                    tarefas_disciplina.pop(indice_remover)
+                    print(f'Tarefa removida com sucesso!')
+                    salva_disciplinas()
+                elif confirmacao_tarefa in 'Nn':
+                    print('Remoção Cancelada.')
+                else:
+                    print('\033[91mOpção inválida. Tente novamente!\033[0m')
+
+                
             else:
                 print('\033[91mOpção inválida. Tente novamente!\033[0m')
                 
         elif escolha_tela == 'M':
             numero_marcar = input('Qual o número da tarefa que você deseja marcar/desmarcar? ')
             indice_marcar = verificacao_valor(numero_marcar, disciplinas[escolhida])
-            if indice_marcar != None:
+            if indice_marcar is not None:
                 disciplinas[escolhida][indice_marcar]["feita"] = not disciplinas[escolhida][indice_marcar]["feita"]
                 salva_disciplinas()
             else:
@@ -97,30 +101,38 @@ def tela_disciplina(escolhida):
 
 
 
-
 print("=" * 30)
 print("Bem-vindo(a) ao seu Organizador de Estudos!")
 print("=" * 30)
 time.sleep(1)
 while True:
-    print('01 - Ver disciplinas')
-    print('02 - Adicionar disciplina')
-    print('03 - Sair')
+    print('1 - Ver disciplinas')
+    print('2 - Adicionar disciplina')
+    print('3 - Sair')
     escolha = input('Escolha: ')
-    if escolha == '03':
+    if escolha == '3':
         print("Até mais! Bons estudos! 📚")
         break 
-    elif escolha == '01':
+    elif escolha == '1':
         lista_disciplinas = ver_disciplina()
         print('R - Remover disciplina')
         print('V - Voltar')
         escolha_disciplina= input('Escolha: ')
         if escolha_disciplina in 'Rr':
             numero_remover = input('Qual o número da disciplina que quer remover? ')
-            remover_disciplina(numero_remover)
+            indice_remover = verificacao_valor(numero_remover, lista_disciplinas)
+            if indice_remover is not None:
+                confirmacao_disciplina = input(f'Tem certeza que deseja remover a disciplina "{lista_disciplinas[indice_remover]}"? (S/N) ')
+                if confirmacao_disciplina in 'Ss':
+                    remover_disciplina(indice_remover)
+                elif confirmacao_disciplina in 'Nn':
+                    print('Remoção Cancelada.')git 
+            else:
+                print('\033[91mOpção inválida. Tente novamente!\033[0m')
+
         elif escolha_disciplina.isdigit():
             indice_disciplina = verificacao_valor(escolha_disciplina, lista_disciplinas)
-            if indice_disciplina != None:
+            if indice_disciplina is not None:
                 escolhida = lista_disciplinas[indice_disciplina]
                 tela_disciplina(escolhida)
             else:
@@ -130,7 +142,7 @@ while True:
             pass
         else:
             print('\033[91mOpção inválida. Tente novamente!\033[0m')
-    elif escolha == '02':
+    elif escolha == '2':
         adicionar_disciplinas()       
     else:
        print('\033[91mOpção inválida. Tente novamente!\033[0m')
