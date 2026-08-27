@@ -40,9 +40,13 @@ def ver_disciplina():
     cont = 1
     for chave in disciplinas:
         quantidade_tarefas = len(disciplinas[chave])
-        lista_disciplinas.append(chave)
-        print(f'{cont} - {chave} ({quantidade_tarefas} tarefas)')
-        cont += 1
+        concluidas = 0
+        for tarefa in disciplinas[chave]:
+            if tarefa["feita"]:
+                concluidas += 1
+    lista_disciplinas.append(chave)
+    print(f'{cont} - {chave} ({concluidas}/{quantidade_tarefas} concluídas)')
+    cont += 1
     return lista_disciplinas
 
 def tela_disciplina(escolhida):
